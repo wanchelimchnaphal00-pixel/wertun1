@@ -1,0 +1,64 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local Window = Rayfield:CreateWindow({
+    Name = "Seed & Booster",
+    LoadingTitle = "Loading...",
+    LoadingSubtitle = "by ChatGPT",
+    ConfigurationSaving = {
+        Enabled = false
+    }
+})
+
+local Tab = Window:CreateTab("Main", 4483362458)
+
+-- สถานะ
+local SeedEnabled = false
+local BoosterEnabled = false
+
+-- Loop ซื้อเมล็ด
+task.spawn(function()
+    while true do
+        if SeedEnabled then
+            local args = {
+                "Magic Mushroom Seed",
+                0
+            }
+            game:GetService("ReplicatedStorage"):WaitForChild("BuySeedRequest"):FireServer(unpack(args))
+        end
+        task.wait(0.2)
+    end
+end)
+
+-- Loop ซื้อบูสเตอร์
+task.spawn(function()
+    while true do
+        if BoosterEnabled then
+            local args = {
+                "Speed Growth",
+                0
+            }
+            game:GetService("ReplicatedStorage"):WaitForChild("BuyBoosterRequest"):FireServer(unpack(args))
+        end
+        task.wait(0.2)
+    end
+end)
+
+-- Toggle ซื้อเมล็ด
+Tab:CreateToggle({
+    Name = "Auto Buy Magic Mushroom Seed",
+    CurrentValue = false,
+    Flag = "SeedToggle",
+    Callback = function(Value)
+        SeedEnabled = Value
+    end,
+})
+
+-- Toggle ซื้อบูสเตอร์
+Tab:CreateToggle({
+    Name = "Auto Buy Speed Growth",
+    CurrentValue = false,
+    Flag = "BoosterToggle",
+    Callback = function(Value)
+        BoosterEnabled = Value
+    end,
+})
